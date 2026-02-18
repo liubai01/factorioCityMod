@@ -29,8 +29,19 @@ Currently in MVP (Minimum Viable Product) development phase.
 
 ## Documentation
 
-- [Game Design Document (GDD)](GDD.md) - Complete design specification
-- [Design Documentation (Markdown)](DESIGN.md) - Technical design details
+### For Players
+- [Player Guide](docs/wiki/PLAYER_GUIDE.md) - Complete gameplay guide and getting started
+- [Buildings Reference](docs/wiki/BUILDINGS.md) - Detailed building information
+- [Recipes Reference](docs/wiki/RECIPES.md) - All recipes and automation tips
+- [FAQ](docs/wiki/FAQ.md) - Frequently asked questions and troubleshooting
+
+### For Developers
+- [Game Design Document (GDD)](docs/design/GDD.md) - Complete design specification
+- [Technical Design Documentation](docs/design/DESIGN.md) - Implementation details and architecture
+
+### Release Information
+- [Mod Description](docs/release/MOD_DESCRIPTION.md) - Mod Portal description
+- [Changelog](docs/release/CHANGELOG.md) - Version history and changes
 
 ## License
 
