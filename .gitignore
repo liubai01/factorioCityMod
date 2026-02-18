@@ -1,0 +1,15 @@
+# Factorio Mod Development
+*.zip
+*.tmp
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
