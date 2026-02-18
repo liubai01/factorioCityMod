@@ -1,0 +1,13 @@
+{
+  "name": "lego-city",
+  "version": "0.1.0",
+  "title": "Lego City",
+  "author": "YourName",
+  "description": "A lightweight expansion mod that integrates city simulation gameplay with Factorio's core automation mechanics, using Lego citizens as the core production carrier.",
+  "factorio_version": "2.0",
+  "dependencies": [
+    "base >= 2.0.0"
+  ],
+  "homepage": "",
+  "contact": ""
+}
