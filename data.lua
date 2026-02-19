@@ -231,10 +231,13 @@ data:extend({
 })
 
 -- Lego Furnace  (placeholder graphics: electric-furnace)
+-- NOTE: Using assembling-machine type instead of furnace because Factorio 2.0
+-- restricts furnace source_inventory_size to 1. assembling-machine with
+-- crafting_categories = {"smelting"} supports multiple ingredient slots (ore + citizen).
 local ef = data.raw["furnace"]["electric-furnace"]
 data:extend({
   {
-    type = "furnace",
+    type = "assembling-machine",
     name = "lego-furnace",
     icon = "__base__/graphics/icons/electric-furnace.png",
     icon_size = 64,
@@ -255,10 +258,9 @@ data:extend({
     close_sound = ef.close_sound,
     vehicle_impact_sound = ef.vehicle_impact_sound,
     working_sound = ef.working_sound,
-    source_inventory_size = 2,  -- Ore slot + Citizen slot (per design)
-    result_inventory_size = 2,  -- Product slot + Citizen-out slot
     crafting_categories = {"smelting"},
     crafting_speed = 1.0,
+    ingredient_count = 2,  -- Ore slot + Citizen slot
     energy_source = {
       type = "electric",
       usage_priority = "secondary-input",
@@ -267,6 +269,7 @@ data:extend({
     energy_usage = "100kW",
     module_specification = nil,
     allowed_effects = {},
+    fluid_boxes = {},
     module_slots = 0
   }
 })
