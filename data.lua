@@ -11,6 +11,7 @@ data:extend({
   { type = "recipe-category", name = "city-hall-crafting" },  -- recruit-lego only
   { type = "recipe-category", name = "house-crafting" },      -- rest-lego only
   { type = "recipe-category", name = "market-crafting" },     -- sell-* only
+  { type = "recipe-category", name = "lego-smelting" },       -- lego-* smelting (citizen + ore)
 })
 
 -- ============================================================================
@@ -258,7 +259,7 @@ data:extend({
     close_sound = ef.close_sound,
     vehicle_impact_sound = ef.vehicle_impact_sound,
     working_sound = ef.working_sound,
-    crafting_categories = {"smelting"},
+    crafting_categories = {"lego-smelting"},
     crafting_speed = 1.0,
     ingredient_count = 2,  -- Ore slot + Citizen slot
     energy_source = {
@@ -507,7 +508,7 @@ for _, entry in pairs(smelting_recipe_snapshot) do
   if recipe.category == "smelting" and recipe.ingredients and (recipe.results or recipe.result) then
     local lego_recipe = table.deepcopy(recipe)
     lego_recipe.name = "lego-" .. recipe_name
-    lego_recipe.category = "smelting"
+    lego_recipe.category = "lego-smelting"
     lego_recipe.subgroup = "lego-city-smelting"
     lego_recipe.order = recipe_name
     lego_recipe.localised_description = nil
