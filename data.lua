@@ -2,6 +2,49 @@
 -- MVP Version: Core items, buildings, recipes, and technologies
 
 -- ============================================================================
+-- ITEM GROUP & SUBGROUPS  (Lego City crafting tab)
+-- ============================================================================
+
+data:extend({
+  -- Main tab icon
+  {
+    type = "item-group",
+    name = "lego-city",
+    icon = "__base__/graphics/icons/assembling-machine-1.png",
+    icon_size = 64,
+    order = "z[lego-city]"
+  },
+  -- Row 1: Citizens & currency
+  {
+    type = "item-subgroup",
+    name = "lego-city-units",
+    group = "lego-city",
+    order = "a"
+  },
+  -- Row 2: Buildings
+  {
+    type = "item-subgroup",
+    name = "lego-city-buildings",
+    group = "lego-city",
+    order = "b"
+  },
+  -- Row 3: Lego smelting recipes
+  {
+    type = "item-subgroup",
+    name = "lego-city-smelting",
+    group = "lego-city",
+    order = "c"
+  },
+  -- Row 4: Market / exchange recipes
+  {
+    type = "item-subgroup",
+    name = "lego-city-market",
+    group = "lego-city",
+    order = "d"
+  }
+})
+
+-- ============================================================================
 -- ITEMS
 -- ============================================================================
 
@@ -14,7 +57,7 @@ data:extend({
     icon_size = 64,
     icon_mipmaps = 4,
     stack_size = 50,
-    subgroup = "intermediate-product",
+    subgroup = "lego-city-units",
     order = "a[lego-citizen]"
   },
   -- Tired Citizen
@@ -25,8 +68,8 @@ data:extend({
     icon_size = 64,
     icon_mipmaps = 4,
     stack_size = 50,
-    subgroup = "intermediate-product",
-    order = "a[lego-citizen-tired]"
+    subgroup = "lego-city-units",
+    order = "b[lego-citizen-tired]"
   },
   -- Money
   {
@@ -36,8 +79,8 @@ data:extend({
     icon_size = 64,
     icon_mipmaps = 4,
     stack_size = 500,
-    subgroup = "intermediate-product",
-    order = "b[money]"
+    subgroup = "lego-city-units",
+    order = "c[money]"
   },
   -- City Hall Item
   {
@@ -46,8 +89,8 @@ data:extend({
     icon = "__base__/graphics/icons/assembling-machine-1.png",
     icon_size = 64,
     icon_mipmaps = 4,
-    subgroup = "production-machine",
-    order = "c[city]-a[city-hall]",
+    subgroup = "lego-city-buildings",
+    order = "a[city-hall]",
     place_result = "city-hall",
     stack_size = 20
   },
@@ -58,8 +101,8 @@ data:extend({
     icon = "__base__/graphics/icons/assembling-machine-1.png",
     icon_size = 64,
     icon_mipmaps = 4,
-    subgroup = "production-machine",
-    order = "c[city]-b[house]",
+    subgroup = "lego-city-buildings",
+    order = "b[house]",
     place_result = "house",
     stack_size = 50
   },
@@ -70,8 +113,8 @@ data:extend({
     icon = "__base__/graphics/icons/electric-furnace.png",
     icon_size = 64,
     icon_mipmaps = 4,
-    subgroup = "smelting-machine",
-    order = "c[city]-c[lego-furnace]",
+    subgroup = "lego-city-buildings",
+    order = "c[lego-furnace]",
     place_result = "lego-furnace",
     stack_size = 50
   },
@@ -82,8 +125,8 @@ data:extend({
     icon = "__base__/graphics/icons/market.png",  -- Placeholder: market building
     icon_size = 64,
     icon_mipmaps = 4,
-    subgroup = "production-machine",
-    order = "c[city]-d[market]",
+    subgroup = "lego-city-buildings",
+    order = "d[lego-market]",
     place_result = "lego-market",
     stack_size = 20
   }
@@ -281,6 +324,8 @@ data:extend({
     type = "recipe",
     name = "city-hall",
     enabled = false,
+    subgroup = "lego-city-buildings",
+    order = "a[city-hall]",
     ingredients = {
       {type = "item", name = "iron-plate", amount = 20},
       {type = "item", name = "electronic-circuit", amount = 5}
@@ -293,6 +338,8 @@ data:extend({
     type = "recipe",
     name = "house",
     enabled = false,
+    subgroup = "lego-city-buildings",
+    order = "b[house]",
     ingredients = {
       {type = "item", name = "iron-plate", amount = 10}
     },
@@ -304,6 +351,8 @@ data:extend({
     type = "recipe",
     name = "lego-furnace",
     enabled = false,
+    subgroup = "lego-city-buildings",
+    order = "c[lego-furnace]",
     ingredients = {
       {type = "item", name = "steel-plate", amount = 10},
       {type = "item", name = "stone-brick", amount = 10},
@@ -317,6 +366,8 @@ data:extend({
     type = "recipe",
     name = "lego-market",
     enabled = false,
+    subgroup = "lego-city-buildings",
+    order = "d[lego-market]",
     ingredients = {
       {type = "item", name = "iron-plate", amount = 15},
       {type = "item", name = "electronic-circuit", amount = 5}
@@ -330,6 +381,8 @@ data:extend({
     name = "recruit-lego",
     category = "crafting",
     enabled = false,
+    subgroup = "lego-city-units",
+    order = "d[recruit-lego]",
     energy_required = 2,
     ingredients = {
       {type = "item", name = "money", amount = 10}
@@ -347,6 +400,8 @@ data:extend({
     name = "rest-lego",
     category = "crafting",
     enabled = false,
+    subgroup = "lego-city-units",
+    order = "e[rest-lego]",
     energy_required = 1,
     ingredients = {
       {type = "item", name = "lego-citizen-tired", amount = 1}
@@ -364,6 +419,8 @@ data:extend({
     name = "sell-iron-plate",
     category = "crafting",
     enabled = false,
+    subgroup = "lego-city-market",
+    order = "a[sell-iron-plate]",
     energy_required = 0.5,
     ingredients = {
       {type = "item", name = "iron-plate", amount = 1}
@@ -377,6 +434,8 @@ data:extend({
     name = "sell-copper-plate",
     category = "crafting",
     enabled = false,
+    subgroup = "lego-city-market",
+    order = "b[sell-copper-plate]",
     energy_required = 0.5,
     ingredients = {
       {type = "item", name = "copper-plate", amount = 1}
@@ -448,7 +507,8 @@ for _, entry in pairs(smelting_recipe_snapshot) do
     local lego_recipe = table.deepcopy(recipe)
     lego_recipe.name = "lego-" .. recipe_name
     lego_recipe.category = "smelting"
-    lego_recipe.localised_name = nil
+    lego_recipe.subgroup = "lego-city-smelting"
+    lego_recipe.order = recipe_name
     lego_recipe.localised_description = nil
     
     -- Keep original ingredients (ore only; citizen slot removed since furnace source_inventory_size = 1)
@@ -475,6 +535,11 @@ for _, entry in pairs(smelting_recipe_snapshot) do
     end
     table.insert(new_results, {type = "item", name = "lego-citizen", amount = 1})
     lego_recipe.results = new_results
+
+    -- Use the base product's item-name as the recipe display name to avoid locale "Unknown key".
+    if base_product_name then
+      lego_recipe.localised_name = {"item-name." .. base_product_name}
+    end
 
     -- Recipes with multiple outputs need explicit icon/icons.
     if (not lego_recipe.icon) and (not lego_recipe.icons) then
