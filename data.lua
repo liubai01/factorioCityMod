@@ -86,7 +86,7 @@ data:extend({
   {
     type = "item",
     name = "city-hall",
-    icon = "__base__/graphics/icons/assembling-machine-1.png",
+    icon = "__base__/graphics/icons/assembling-machine-3.png",
     icon_size = 64,
     icon_mipmaps = 4,
     subgroup = "lego-city-buildings",
@@ -122,7 +122,7 @@ data:extend({
   {
     type = "item",
     name = "lego-market",
-    icon = "__base__/graphics/icons/market.png",  -- Placeholder: market building
+    icon = "__base__/graphics/icons/assembling-machine-2.png",  -- Placeholder: market building
     icon_size = 64,
     icon_mipmaps = 4,
     subgroup = "lego-city-buildings",
@@ -136,37 +136,31 @@ data:extend({
 -- BUILDINGS
 -- ============================================================================
 
--- City Hall
+-- City Hall  (placeholder graphics: assembling-machine-3)
+local am3 = data.raw["assembling-machine"]["assembling-machine-3"]
 data:extend({
   {
     type = "assembling-machine",
     name = "city-hall",
-    icon = "__base__/graphics/icons/assembling-machine-1.png",  -- Placeholder
+    icon = "__base__/graphics/icons/assembling-machine-3.png",
     icon_size = 64,
     icon_mipmaps = 4,
     flags = {"placeable-neutral", "player-creation"},
     minable = {mining_time = 0.2, result = "city-hall"},
     max_health = 300,
-    corpse = "assembling-machine-1-remnants",
-    dying_explosion = "assembling-machine-1-explosion",
+    corpse = am3.corpse,
+    dying_explosion = am3.dying_explosion,
     resistances = {
       {type = "fire", percent = 70}
     },
-    collision_box = {{-1.2, -1.2}, {1.2, 1.2}},
-    selection_box = {{-1.5, -1.5}, {1.5, 1.5}},
-    drawing_box = {{-1.5, -1.5}, {1.5, 1.5}},
-    animation = data.raw["assembling-machine"]["assembling-machine-1"].animation,
-    open_sound = {filename = "__base__/sound/machine-open.ogg", volume = 0.85},
-    close_sound = {filename = "__base__/sound/machine-close.ogg", volume = 0.75},
-    vehicle_impact_sound = {filename = "__base__/sound/car-metal-impact.ogg", volume = 0.65},
-    working_sound = {
-      sound = {
-        {filename = "__base__/sound/assembling-machine-t1-1.ogg", volume = 0.8},
-        {filename = "__base__/sound/assembling-machine-t1-2.ogg", volume = 0.8}
-      },
-      idle_sound = {filename = "__base__/sound/idle1.ogg", volume = 0.6},
-      apparent_volume = 1.5
-    },
+    collision_box = am3.collision_box,
+    selection_box = am3.selection_box,
+    drawing_box = am3.drawing_box,
+    graphics_set = table.deepcopy(am3.graphics_set),
+    open_sound = am3.open_sound,
+    close_sound = am3.close_sound,
+    vehicle_impact_sound = am3.vehicle_impact_sound,
+    working_sound = am3.working_sound,
     crafting_categories = {"crafting"},
     crafting_speed = 1.0,
     energy_source = {
@@ -183,37 +177,31 @@ data:extend({
   }
 })
 
--- Regular House
+-- Regular House  (placeholder graphics: assembling-machine-1)
+local am1 = data.raw["assembling-machine"]["assembling-machine-1"]
 data:extend({
   {
     type = "assembling-machine",
     name = "house",
-    icon = "__base__/graphics/icons/assembling-machine-1.png",  -- Placeholder
+    icon = "__base__/graphics/icons/assembling-machine-1.png",
     icon_size = 64,
     icon_mipmaps = 4,
     flags = {"placeable-neutral", "player-creation"},
     minable = {mining_time = 0.2, result = "house"},
     max_health = 200,
-    corpse = "assembling-machine-1-remnants",
-    dying_explosion = "assembling-machine-1-explosion",
+    corpse = am1.corpse,
+    dying_explosion = am1.dying_explosion,
     resistances = {
       {type = "fire", percent = 70}
     },
-    collision_box = {{-1.2, -1.2}, {1.2, 1.2}},
-    selection_box = {{-1.5, -1.5}, {1.5, 1.5}},
-    drawing_box = {{-1.5, -1.5}, {1.5, 1.5}},
-    animation = data.raw["assembling-machine"]["assembling-machine-1"].animation,
-    open_sound = {filename = "__base__/sound/machine-open.ogg", volume = 0.85},
-    close_sound = {filename = "__base__/sound/machine-close.ogg", volume = 0.75},
-    vehicle_impact_sound = {filename = "__base__/sound/car-metal-impact.ogg", volume = 0.65},
-    working_sound = {
-      sound = {
-        {filename = "__base__/sound/assembling-machine-t1-1.ogg", volume = 0.8},
-        {filename = "__base__/sound/assembling-machine-t1-2.ogg", volume = 0.8}
-      },
-      idle_sound = {filename = "__base__/sound/idle1.ogg", volume = 0.6},
-      apparent_volume = 1.5
-    },
+    collision_box = am1.collision_box,
+    selection_box = am1.selection_box,
+    drawing_box = am1.drawing_box,
+    graphics_set = table.deepcopy(am1.graphics_set),
+    open_sound = am1.open_sound,
+    close_sound = am1.close_sound,
+    vehicle_impact_sound = am1.vehicle_impact_sound,
+    working_sound = am1.working_sound,
     crafting_categories = {"crafting"},
     crafting_speed = 1.0,
     energy_source = {
@@ -230,27 +218,31 @@ data:extend({
   }
 })
 
--- Lego Furnace
+-- Lego Furnace  (placeholder graphics: electric-furnace)
+local ef = data.raw["furnace"]["electric-furnace"]
 data:extend({
   {
     type = "furnace",
     name = "lego-furnace",
-    icon = "__base__/graphics/icons/electric-furnace.png",  -- Placeholder
+    icon = "__base__/graphics/icons/electric-furnace.png",
     icon_size = 64,
     icon_mipmaps = 4,
     flags = {"placeable-neutral", "player-creation"},
     minable = {mining_time = 0.2, result = "lego-furnace"},
     max_health = 300,
-    corpse = "electric-furnace-remnants",
-    dying_explosion = "electric-furnace-explosion",
+    corpse = ef.corpse,
+    dying_explosion = ef.dying_explosion,
     resistances = {
       {type = "fire", percent = 70}
     },
-    collision_box = {{-1.2, -1.2}, {1.2, 1.2}},
-    selection_box = {{-1.5, -1.5}, {1.5, 1.5}},
-    working_visualisations = data.raw["furnace"]["electric-furnace"].working_visualisations,
-    animation = data.raw["furnace"]["electric-furnace"].animation,
-    working_sound = data.raw["furnace"]["electric-furnace"].working_sound,
+    collision_box = ef.collision_box,
+    selection_box = ef.selection_box,
+    drawing_box = ef.drawing_box,
+    graphics_set = table.deepcopy(ef.graphics_set),
+    open_sound = ef.open_sound,
+    close_sound = ef.close_sound,
+    vehicle_impact_sound = ef.vehicle_impact_sound,
+    working_sound = ef.working_sound,
     source_inventory_size = 1,  -- Ore only (citizen managed via results)
     result_inventory_size = 1,  -- Product only (citizen output handled by control.lua)
     crafting_categories = {"smelting"},
@@ -267,37 +259,31 @@ data:extend({
   }
 })
 
--- Market
+-- Market  (placeholder graphics: assembling-machine-2)
+local am2 = data.raw["assembling-machine"]["assembling-machine-2"]
 data:extend({
   {
     type = "assembling-machine",
     name = "lego-market",
-    icon = "__base__/graphics/icons/market.png",  -- Placeholder: market building
+    icon = "__base__/graphics/icons/assembling-machine-2.png",
     icon_size = 64,
     icon_mipmaps = 4,
     flags = {"placeable-neutral", "player-creation"},
     minable = {mining_time = 0.2, result = "lego-market"},
     max_health = 300,
-    corpse = "assembling-machine-1-remnants",
-    dying_explosion = "assembling-machine-1-explosion",
+    corpse = am2.corpse,
+    dying_explosion = am2.dying_explosion,
     resistances = {
       {type = "fire", percent = 70}
     },
-    collision_box = {{-1.2, -1.2}, {1.2, 1.2}},
-    selection_box = {{-1.5, -1.5}, {1.5, 1.5}},
-    drawing_box = {{-1.5, -1.5}, {1.5, 1.5}},
-    animation = data.raw["assembling-machine"]["assembling-machine-1"].animation,
-    open_sound = {filename = "__base__/sound/machine-open.ogg", volume = 0.85},
-    close_sound = {filename = "__base__/sound/machine-close.ogg", volume = 0.75},
-    vehicle_impact_sound = {filename = "__base__/sound/car-metal-impact.ogg", volume = 0.65},
-    working_sound = {
-      sound = {
-        {filename = "__base__/sound/assembling-machine-t1-1.ogg", volume = 0.8},
-        {filename = "__base__/sound/assembling-machine-t1-2.ogg", volume = 0.8}
-      },
-      idle_sound = {filename = "__base__/sound/idle1.ogg", volume = 0.6},
-      apparent_volume = 1.5
-    },
+    collision_box = am2.collision_box,
+    selection_box = am2.selection_box,
+    drawing_box = am2.drawing_box,
+    graphics_set = table.deepcopy(am2.graphics_set),
+    open_sound = am2.open_sound,
+    close_sound = am2.close_sound,
+    vehicle_impact_sound = am2.vehicle_impact_sound,
+    working_sound = am2.working_sound,
     crafting_categories = {"crafting"},
     crafting_speed = 1.0,
     energy_source = {
