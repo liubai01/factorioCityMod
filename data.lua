@@ -2,6 +2,18 @@
 -- MVP Version: Core items, buildings, recipes, and technologies
 
 -- ============================================================================
+-- CUSTOM RECIPE CATEGORIES
+-- Each building only accepts its own category, preventing vanilla recipes
+-- from appearing in city buildings.
+-- ============================================================================
+
+data:extend({
+  { type = "recipe-category", name = "city-hall-crafting" },  -- recruit-lego only
+  { type = "recipe-category", name = "house-crafting" },      -- rest-lego only
+  { type = "recipe-category", name = "market-crafting" },     -- sell-* only
+})
+
+-- ============================================================================
 -- ITEM GROUP & SUBGROUPS  (Lego City crafting tab)
 -- ============================================================================
 
@@ -161,7 +173,7 @@ data:extend({
     close_sound = am3.close_sound,
     vehicle_impact_sound = am3.vehicle_impact_sound,
     working_sound = am3.working_sound,
-    crafting_categories = {"crafting"},
+    crafting_categories = {"city-hall-crafting"},
     crafting_speed = 1.0,
     energy_source = {
       type = "electric",
@@ -202,7 +214,7 @@ data:extend({
     close_sound = am1.close_sound,
     vehicle_impact_sound = am1.vehicle_impact_sound,
     working_sound = am1.working_sound,
-    crafting_categories = {"crafting"},
+    crafting_categories = {"house-crafting"},
     crafting_speed = 1.0,
     energy_source = {
       type = "electric",
@@ -243,8 +255,8 @@ data:extend({
     close_sound = ef.close_sound,
     vehicle_impact_sound = ef.vehicle_impact_sound,
     working_sound = ef.working_sound,
-    source_inventory_size = 1,  -- Ore only (citizen managed via results)
-    result_inventory_size = 1,  -- Product only (citizen output handled by control.lua)
+    source_inventory_size = 2,  -- Ore slot + Citizen slot (per design)
+    result_inventory_size = 2,  -- Product slot + Citizen-out slot
     crafting_categories = {"smelting"},
     crafting_speed = 1.0,
     energy_source = {
@@ -284,7 +296,7 @@ data:extend({
     close_sound = am2.close_sound,
     vehicle_impact_sound = am2.vehicle_impact_sound,
     working_sound = am2.working_sound,
-    crafting_categories = {"crafting"},
+    crafting_categories = {"market-crafting"},
     crafting_speed = 1.0,
     energy_source = {
       type = "electric",
@@ -365,7 +377,7 @@ data:extend({
   {
     type = "recipe",
     name = "recruit-lego",
-    category = "crafting",
+    category = "city-hall-crafting",
     enabled = false,
     subgroup = "lego-city-units",
     order = "d[recruit-lego]",
@@ -384,7 +396,7 @@ data:extend({
   {
     type = "recipe",
     name = "rest-lego",
-    category = "crafting",
+    category = "house-crafting",
     enabled = false,
     subgroup = "lego-city-units",
     order = "e[rest-lego]",
@@ -403,7 +415,7 @@ data:extend({
   {
     type = "recipe",
     name = "sell-iron-plate",
-    category = "crafting",
+    category = "market-crafting",
     enabled = false,
     subgroup = "lego-city-market",
     order = "a[sell-iron-plate]",
@@ -418,7 +430,7 @@ data:extend({
   {
     type = "recipe",
     name = "sell-copper-plate",
-    category = "crafting",
+    category = "market-crafting",
     enabled = false,
     subgroup = "lego-city-market",
     order = "b[sell-copper-plate]",
@@ -497,10 +509,17 @@ for _, entry in pairs(smelting_recipe_snapshot) do
     lego_recipe.order = recipe_name
     lego_recipe.localised_description = nil
     
-    -- Keep original ingredients (ore only; citizen slot removed since furnace source_inventory_size = 1)
-    -- Citizen is consumed/returned via control.lua stamina logic, not as a recipe ingredient
+    -- Per design: citizen is a required ingredient (catalyst), consumed and returned
+    -- after smelting.  The citizen always exits as lego-citizen-tired (simplified
+    -- stamina model; House recipe converts tired → adult, completing the loop).
+    local new_ingredients = {}
+    for _, ing in pairs(lego_recipe.ingredients) do
+      table.insert(new_ingredients, ing)
+    end
+    table.insert(new_ingredients, {type = "item", name = "lego-citizen", amount = 1})
+    lego_recipe.ingredients = new_ingredients
 
-    -- Add citizen to results (will be modified in control.lua based on stamina)
+    -- Build results: smelting product(s) + tired citizen output
     local new_results = {}
     local base_product_name = recipe.result
     if recipe.results then
@@ -519,7 +538,8 @@ for _, entry in pairs(smelting_recipe_snapshot) do
       lego_recipe.result = nil
       lego_recipe.result_count = nil
     end
-    table.insert(new_results, {type = "item", name = "lego-citizen", amount = 1})
+    -- Always output tired citizen (stamina consumed by work); House restores them
+    table.insert(new_results, {type = "item", name = "lego-citizen-tired", amount = 1})
     lego_recipe.results = new_results
 
     -- Use the base product's item-name as the recipe display name to avoid locale "Unknown key".
