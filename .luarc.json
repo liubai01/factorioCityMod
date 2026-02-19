@@ -1,0 +1,47 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
+
+  "Lua.runtime.version": "Lua 5.2",
+
+  "Lua.workspace.library": [
+    "./types"
+  ],
+
+  "Lua.workspace.ignoreDir": [
+    ".git",
+    "scripts",
+    "docs"
+  ],
+
+  "Lua.diagnostics.globals": [
+    "game",
+    "script",
+    "storage",
+    "defines",
+    "helpers",
+    "prototypes",
+    "remote",
+    "commands",
+    "settings",
+    "rcon",
+    "rendering",
+    "log",
+    "serpent",
+    "table_size",
+    "data"
+  ],
+
+  "Lua.diagnostics.disable": [
+    "lowercase-global",
+    "undefined-global"
+  ],
+
+  "Lua.completion.enable": true,
+  "Lua.completion.autoRequire": false,
+  "Lua.hover.enable": true,
+  "Lua.signatureHelp.enable": true,
+
+  "Lua.hint.enable": true,
+  "Lua.hint.paramType": true,
+  "Lua.hint.returnType": true
+}

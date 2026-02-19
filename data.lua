@@ -10,25 +10,23 @@ data:extend({
   {
     type = "item",
     name = "lego-citizen",
-    icon = "__base__/graphics/icons/character.png",  -- Placeholder, replace with custom icon
+    icon = "__base__/graphics/icons/construction-robot.png",  -- Placeholder: citizen worker
     icon_size = 64,
     icon_mipmaps = 4,
     stack_size = 50,
     subgroup = "intermediate-product",
-    order = "a[lego-citizen]",
-    flags = {"goes-to-quickbar"}
+    order = "a[lego-citizen]"
   },
   -- Tired Citizen
   {
     type = "item",
     name = "lego-citizen-tired",
-    icon = "__base__/graphics/icons/character.png",  -- Placeholder, replace with custom icon
+    icon = "__base__/graphics/icons/battery.png",  -- Placeholder: low energy / tired
     icon_size = 64,
     icon_mipmaps = 4,
     stack_size = 50,
     subgroup = "intermediate-product",
-    order = "a[lego-citizen-tired]",
-    flags = {"goes-to-quickbar"}
+    order = "a[lego-citizen-tired]"
   },
   -- Money
   {
@@ -39,8 +37,55 @@ data:extend({
     icon_mipmaps = 4,
     stack_size = 500,
     subgroup = "intermediate-product",
-    order = "b[money]",
-    flags = {"goes-to-quickbar"}
+    order = "b[money]"
+  },
+  -- City Hall Item
+  {
+    type = "item",
+    name = "city-hall",
+    icon = "__base__/graphics/icons/assembling-machine-1.png",
+    icon_size = 64,
+    icon_mipmaps = 4,
+    subgroup = "production-machine",
+    order = "c[city]-a[city-hall]",
+    place_result = "city-hall",
+    stack_size = 20
+  },
+  -- House Item
+  {
+    type = "item",
+    name = "house",
+    icon = "__base__/graphics/icons/assembling-machine-1.png",
+    icon_size = 64,
+    icon_mipmaps = 4,
+    subgroup = "production-machine",
+    order = "c[city]-b[house]",
+    place_result = "house",
+    stack_size = 50
+  },
+  -- Lego Furnace Item
+  {
+    type = "item",
+    name = "lego-furnace",
+    icon = "__base__/graphics/icons/electric-furnace.png",
+    icon_size = 64,
+    icon_mipmaps = 4,
+    subgroup = "smelting-machine",
+    order = "c[city]-c[lego-furnace]",
+    place_result = "lego-furnace",
+    stack_size = 50
+  },
+  -- Market Item
+  {
+    type = "item",
+    name = "lego-market",
+    icon = "__base__/graphics/icons/market.png",  -- Placeholder: market building
+    icon_size = 64,
+    icon_mipmaps = 4,
+    subgroup = "production-machine",
+    order = "c[city]-d[market]",
+    place_result = "lego-market",
+    stack_size = 20
   }
 })
 
@@ -84,7 +129,7 @@ data:extend({
     energy_source = {
       type = "electric",
       usage_priority = "secondary-input",
-      emissions_per_minute = 2
+      emissions_per_minute = { pollution = 2 }
     },
     energy_usage = "100kW",
     ingredient_count = 1,
@@ -131,7 +176,7 @@ data:extend({
     energy_source = {
       type = "electric",
       usage_priority = "secondary-input",
-      emissions_per_minute = 1
+      emissions_per_minute = { pollution = 1 }
     },
     energy_usage = "20kW",
     ingredient_count = 1,
@@ -163,14 +208,14 @@ data:extend({
     working_visualisations = data.raw["furnace"]["electric-furnace"].working_visualisations,
     animation = data.raw["furnace"]["electric-furnace"].animation,
     working_sound = data.raw["furnace"]["electric-furnace"].working_sound,
-    source_inventory_size = 2,  -- Ore + Citizen
-    result_inventory_size = 2,  -- Product + Citizen
+    source_inventory_size = 1,  -- Ore only (citizen managed via results)
+    result_inventory_size = 1,  -- Product only (citizen output handled by control.lua)
     crafting_categories = {"smelting"},
     crafting_speed = 1.0,
     energy_source = {
       type = "electric",
       usage_priority = "secondary-input",
-      emissions_per_minute = 2
+      emissions_per_minute = { pollution = 2 }
     },
     energy_usage = "100kW",
     module_specification = nil,
@@ -183,12 +228,12 @@ data:extend({
 data:extend({
   {
     type = "assembling-machine",
-    name = "market",
-    icon = "__base__/graphics/icons/assembling-machine-1.png",  -- Placeholder
+    name = "lego-market",
+    icon = "__base__/graphics/icons/market.png",  -- Placeholder: market building
     icon_size = 64,
     icon_mipmaps = 4,
     flags = {"placeable-neutral", "player-creation"},
-    minable = {mining_time = 0.2, result = "market"},
+    minable = {mining_time = 0.2, result = "lego-market"},
     max_health = 300,
     corpse = "assembling-machine-1-remnants",
     dying_explosion = "assembling-machine-1-explosion",
@@ -215,7 +260,7 @@ data:extend({
     energy_source = {
       type = "electric",
       usage_priority = "secondary-input",
-      emissions_per_minute = 1
+      emissions_per_minute = { pollution = 1 }
     },
     energy_usage = "50kW",
     ingredient_count = 1,
@@ -232,6 +277,54 @@ data:extend({
 
 -- Recruit Lego Citizen
 data:extend({
+  {
+    type = "recipe",
+    name = "city-hall",
+    enabled = false,
+    ingredients = {
+      {type = "item", name = "iron-plate", amount = 20},
+      {type = "item", name = "electronic-circuit", amount = 5}
+    },
+    results = {
+      {type = "item", name = "city-hall", amount = 1}
+    }
+  },
+  {
+    type = "recipe",
+    name = "house",
+    enabled = false,
+    ingredients = {
+      {type = "item", name = "iron-plate", amount = 10}
+    },
+    results = {
+      {type = "item", name = "house", amount = 1}
+    }
+  },
+  {
+    type = "recipe",
+    name = "lego-furnace",
+    enabled = false,
+    ingredients = {
+      {type = "item", name = "steel-plate", amount = 10},
+      {type = "item", name = "stone-brick", amount = 10},
+      {type = "item", name = "advanced-circuit", amount = 5}
+    },
+    results = {
+      {type = "item", name = "lego-furnace", amount = 1}
+    }
+  },
+  {
+    type = "recipe",
+    name = "lego-market",
+    enabled = false,
+    ingredients = {
+      {type = "item", name = "iron-plate", amount = 15},
+      {type = "item", name = "electronic-circuit", amount = 5}
+    },
+    results = {
+      {type = "item", name = "lego-market", amount = 1}
+    }
+  },
   {
     type = "recipe",
     name = "recruit-lego",
@@ -296,27 +389,103 @@ data:extend({
 
 -- Dynamic Smelting Recipes (for Lego Furnace)
 -- Generate recipes for all vanilla smelting recipes
+local function get_result_name(result_entry)
+  if type(result_entry) ~= "table" then
+    return nil
+  end
+  if result_entry.name then
+    return result_entry.name
+  end
+  if type(result_entry[1]) == "string" then
+    return result_entry[1]
+  end
+  return nil
+end
+
+local function get_product_icon(product_name)
+  if not product_name then
+    return nil, nil, nil
+  end
+
+  local item_prototype_types = {
+    "item",
+    "ammo",
+    "capsule",
+    "gun",
+    "module",
+    "armor",
+    "tool",
+    "item-with-entity-data"
+  }
+
+  for _, prototype_type in pairs(item_prototype_types) do
+    local proto_group = data.raw[prototype_type]
+    if proto_group and proto_group[product_name] then
+      local proto = proto_group[product_name]
+      return proto.icon, proto.icon_size, proto.icons
+    end
+  end
+
+  if data.raw.fluid and data.raw.fluid[product_name] then
+    local fluid = data.raw.fluid[product_name]
+    return fluid.icon, fluid.icon_size, fluid.icons
+  end
+
+  return nil, nil, nil
+end
+
+local smelting_recipe_snapshot = {}
 for recipe_name, recipe in pairs(data.raw.recipe) do
-  if recipe.category == "smelting" and recipe.ingredients and recipe.results then
+  if string.sub(recipe_name, 1, 5) ~= "lego-" then
+    table.insert(smelting_recipe_snapshot, {name = recipe_name, recipe = recipe})
+  end
+end
+
+for _, entry in pairs(smelting_recipe_snapshot) do
+  local recipe_name = entry.name
+  local recipe = entry.recipe
+  if recipe.category == "smelting" and recipe.ingredients and (recipe.results or recipe.result) then
     local lego_recipe = table.deepcopy(recipe)
     lego_recipe.name = "lego-" .. recipe_name
     lego_recipe.category = "smelting"
+    lego_recipe.localised_name = nil
+    lego_recipe.localised_description = nil
     
-    -- Add citizen to ingredients
-    local new_ingredients = {}
-    for _, ingredient in pairs(recipe.ingredients) do
-      table.insert(new_ingredients, ingredient)
-    end
-    table.insert(new_ingredients, {type = "item", name = "lego-citizen", amount = 1})
-    lego_recipe.ingredients = new_ingredients
-    
+    -- Keep original ingredients (ore only; citizen slot removed since furnace source_inventory_size = 1)
+    -- Citizen is consumed/returned via control.lua stamina logic, not as a recipe ingredient
+
     -- Add citizen to results (will be modified in control.lua based on stamina)
     local new_results = {}
-    for _, result in pairs(recipe.results) do
-      table.insert(new_results, result)
+    local base_product_name = recipe.result
+    if recipe.results then
+      for _, result in pairs(recipe.results) do
+        table.insert(new_results, result)
+        if (not base_product_name) and get_result_name(result) ~= "lego-citizen" then
+          base_product_name = get_result_name(result)
+        end
+      end
+    else
+      table.insert(new_results, {
+        type = "item",
+        name = recipe.result,
+        amount = recipe.result_count or 1
+      })
+      lego_recipe.result = nil
+      lego_recipe.result_count = nil
     end
     table.insert(new_results, {type = "item", name = "lego-citizen", amount = 1})
     lego_recipe.results = new_results
+
+    -- Recipes with multiple outputs need explicit icon/icons.
+    if (not lego_recipe.icon) and (not lego_recipe.icons) then
+      local icon, icon_size, icons = get_product_icon(base_product_name)
+      if icons then
+        lego_recipe.icons = table.deepcopy(icons)
+      elseif icon then
+        lego_recipe.icon = icon
+        lego_recipe.icon_size = icon_size or 64
+      end
+    end
     
     data:extend({lego_recipe})
   end
@@ -331,7 +500,7 @@ data:extend({
   {
     type = "technology",
     name = "lego-city-settlement",
-    icon = "__base__/graphics/technology/automation.png",  -- Placeholder
+    icon = "__base__/graphics/technology/automation-1.png",  -- Placeholder
     icon_size = 256,
     icon_mipmaps = 4,
     effects = {
@@ -344,21 +513,19 @@ data:extend({
         recipe = "rest-lego"
       },
       {
-        type = "building-limit",
-        building = "city-hall",
-        limit = 1
+        type = "unlock-recipe",
+        recipe = "city-hall"
       },
       {
-        type = "building-limit",
-        building = "house",
-        limit = 2
+        type = "unlock-recipe",
+        recipe = "house"
       }
     },
     prerequisites = {},
     unit = {
       count = 30,
       ingredients = {
-        {type = "item", name = "automation-science-pack", amount = 1}
+        {"automation-science-pack", 1}
       },
       time = 30
     },
@@ -371,7 +538,7 @@ data:extend({
   {
     type = "technology",
     name = "lego-city-service",
-    icon = "__base__/graphics/technology/logistics.png",  -- Placeholder
+    icon = "__base__/graphics/technology/logistics-1.png",  -- Placeholder
     icon_size = 256,
     icon_mipmaps = 4,
     effects = {
@@ -384,22 +551,20 @@ data:extend({
         recipe = "sell-copper-plate"
       },
       {
-        type = "building-limit",
-        building = "city-hall",
-        limit = 1
+        type = "unlock-recipe",
+        recipe = "lego-market"
       },
       {
-        type = "building-limit",
-        building = "house",
-        limit = 5
+        type = "unlock-recipe",
+        recipe = "lego-furnace"
       }
     },
     prerequisites = {"lego-city-settlement"},
     unit = {
       count = 50,
       ingredients = {
-        {type = "item", name = "automation-science-pack", amount = 1},
-        {type = "item", name = "logistic-science-pack", amount = 1}
+        {"automation-science-pack", 1},
+        {"logistic-science-pack", 1}
       },
       time = 30
     },
@@ -417,14 +582,8 @@ data:extend({
     icon_mipmaps = 4,
     effects = {
       {
-        type = "building-limit",
-        building = "city-hall",
-        limit = 2
-      },
-      {
-        type = "building-limit",
-        building = "house",
-        limit = 8
+        type = "nothing",
+        effect_description = {"", "Improve city operation efficiency."}
       }
       -- Work speed bonus will be applied in control.lua
     },
@@ -432,9 +591,9 @@ data:extend({
     unit = {
       count = 80,
       ingredients = {
-        {type = "item", name = "automation-science-pack", amount = 1},
-        {type = "item", name = "logistic-science-pack", amount = 1},
-        {type = "item", name = "chemical-science-pack", amount = 1}
+        {"automation-science-pack", 1},
+        {"logistic-science-pack", 1},
+        {"chemical-science-pack", 1}
       },
       time = 30
     },

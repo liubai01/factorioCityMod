@@ -18,6 +18,22 @@ A lightweight expansion mod that integrates city simulation gameplay with Factor
    - macOS: `~/Library/Application Support/factorio/mods/`
 3. Enable the mod in Factorio's mod menu
 
+### Windows Dev One-Click Install
+
+- Double-click `install-dev-mod-windows.cmd`
+- Or run:
+  - `powershell -ExecutionPolicy Bypass -File .\scripts\install-dev-mod.ps1`
+
+This script installs the current repository as a development mod to `%APPDATA%\Factorio\mods\` and removes existing `lego-city_*.zip` packages to avoid duplicate mod conflicts.
+
+### Windows Dev One-Click Uninstall
+
+- Double-click `uninstall-dev-mod-windows.cmd`
+- Or run:
+  - `powershell -ExecutionPolicy Bypass -File .\scripts\uninstall-dev-mod.ps1`
+
+This script removes `%APPDATA%\Factorio\mods\lego-city` and any `lego-city_*.zip` package files.
+
 ## Requirements
 
 - Factorio 2.0 or higher (compatible with Space Age DLC)
